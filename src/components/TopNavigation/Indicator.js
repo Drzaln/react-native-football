@@ -1,18 +1,18 @@
 import React from 'react'
-import { Animated as RnAnimated } from 'react-native'
+import Animated, { interpolate } from 'react-native-reanimated'
 
 const Indicator = ({ measures, data, navPosition }) => {
 	const inputRange = data.map((_, i) => i)
-	const indicatorWidth = navPosition.interpolate({
+	const indicatorWidth = interpolate(navPosition,{
 		inputRange,
 		outputRange: measures.map((measure) => measure.width - 6)
 	})
-	const translateX = navPosition.interpolate({
+	const translateX = interpolate(navPosition,{
 		inputRange,
 		outputRange: measures.map((measure) => measure.x + 3)
 	})
 	return (
-		<RnAnimated.View
+		<Animated.View
 			style={{
 				height: 2,
 				position: 'absolute',
