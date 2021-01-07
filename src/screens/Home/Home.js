@@ -4,7 +4,7 @@ import { useTransition } from 'react-native-redash/lib/module/v1'
 import { forwards, midfielders, defenders, goalkeepers } from '../../constants/Player'
 
 const Home = () => {
-	const [ show, setShow ] = useState(1)
+	const [ show, setShow ] = useState(0)
 	const transitionHome = useTransition(show)
 
 	useEffect(() => {
