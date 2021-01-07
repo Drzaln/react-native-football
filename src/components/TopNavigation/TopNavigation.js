@@ -1,12 +1,12 @@
 import React, { createRef, useEffect, useRef, useState, useCallback } from 'react'
-import { Animated as RnAnimated } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useTransition } from 'react-native-redash/lib/module/v1'
 import Indicator from './Indicator'
 import RenderNav from './RenderNav'
 
 const TopNavigation = ({ selectedNav, onPress, nav }) => {
 	const containerRef = useRef()
-	const navPosition = useRef(new RnAnimated.Value(0)).current
+	const transitionNav = useTransition(selectedNav)
 	const [ measures, setMeasures ] = useState([])
 
 	const data = nav.map((item, i) => ({
@@ -30,11 +30,6 @@ const TopNavigation = ({ selectedNav, onPress, nav }) => {
 	}, [])
 
 	const changeNav = useCallback((key) => {
-		RnAnimated.timing(navPosition, {
-			toValue: key,
-			duration: 350,
-			useNativeDriver: false
-		}).start()
 		onPress(key)
 	}, [])
 
@@ -56,7 +51,7 @@ const TopNavigation = ({ selectedNav, onPress, nav }) => {
 					/>
 				)
 			})}
-			{measures && measures.length > 0 && <Indicator measures={measures} data={data} navPosition={navPosition} />}
+			{measures && measures.length > 0 && <Indicator measures={measures} data={data} navPosition={transitionNav} />}
 		</ScrollView>
 	)
 }
