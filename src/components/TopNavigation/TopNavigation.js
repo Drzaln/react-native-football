@@ -17,7 +17,7 @@ const TopNavigation = ({ selectedNav, onPress, nav }) => {
 
 	useEffect(() => {
 		let m = []
-		if (data.length > 0) {
+		if (data && data.length > 0) {
 			data.forEach((item) => {
 				item.ref.current.measureLayout(containerRef.current, (x, y, width, height) => {
 					m.push({ x, y, width, height })
@@ -56,7 +56,7 @@ const TopNavigation = ({ selectedNav, onPress, nav }) => {
 					/>
 				)
 			})}
-			{measures.length > 0 && <Indicator measures={measures} data={data} navPosition={navPosition} />}
+			{measures && measures.length > 0 && <Indicator measures={measures} data={data} navPosition={navPosition} />}
 		</ScrollView>
 	)
 }
