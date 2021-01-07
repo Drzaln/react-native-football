@@ -1,31 +1,84 @@
 import React, { createRef, useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, View, Text, StatusBar, TouchableOpacity, Animated as RnAnimated } from 'react-native'
+import {
+	SafeAreaView,
+	View,
+	Text,
+	StatusBar,
+	TouchableOpacity,
+	Animated as RnAnimated,
+	ImageBackground,
+	Pressable
+} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import LinearGradient from 'react-native-linear-gradient'
 import { enableScreens } from 'react-native-screens'
 enableScreens()
 
 const App = () => {
 	const [ selectedNav, setSelectedNav ] = useState(0)
 	return (
-		<React.Fragment>
-			<StatusBar barStyle="light-content" backgroundColor="#000" />
-			<SafeAreaView style={{ backgroundColor: '#030610', flex: 1 }}>
+		<View style={{ backgroundColor: '#030610', flex: 1 }}>
+			<StatusBar barStyle="light-content" backgroundColor="#030610" />
+			<SafeAreaView>
 				<Header />
 				<TopNavigation selectedNav={selectedNav} onPress={(key) => setSelectedNav(key)} />
-				<View style={{ flexDirection: 'row' }}>
+				<ScrollView horizontal contentContainerStyle={{ alignItems: 'center' }}>
 					<Text
 						style={{
-							fontFamily: 'Oswald-Regular',
-							color: '#FAFAFA',
+							position: 'absolute',
+							left: -45,
+							fontFamily: 'Oswald-SemiBold',
+							color: '#25282A',
 							fontSize: 36,
 							textTransform: 'uppercase',
 							transform: [ { rotate: '-90deg' } ]
 						}}>
 						forward
 					</Text>
-				</View>
+					<Pressable>
+						<View style={{ width: 125, height: 200, marginLeft: 70 }}>
+							<ImageBackground
+								style={{
+									width: '100%',
+									height: '100%',
+									position: 'absolute',
+									zIndex: 1,
+									justifyContent: 'flex-end'
+								}}
+								source={require('./src/assets/team/RONALDO_501x752.png')}
+								resizeMode="cover">
+								<LinearGradient
+									colors={[ 'transparent', '#030610', '#030610', '#030610' ]}
+									style={{
+										paddingBottom: 8,
+										paddingTop: 16,
+										justifyContent: 'center',
+										alignItems: 'center'
+									}}>
+									<Text
+										adjustsFontSizeToFit
+										style={{ color: '#FAFAFA', fontSize: 12, fontWeight: 'bold' }}>
+										Cristiano RONALDO
+									</Text>
+								</LinearGradient>
+							</ImageBackground>
+							<Text
+								style={{
+									position: 'absolute',
+									top: -20,
+									left: 5,
+									fontFamily: 'JuventusFans-Bold',
+									color: '#25282A',
+									fontSize: 70,
+									textTransform: 'uppercase'
+								}}>
+								7
+							</Text>
+						</View>
+					</Pressable>
+				</ScrollView>
 			</SafeAreaView>
-		</React.Fragment>
+		</View>
 	)
 }
 
@@ -129,7 +182,7 @@ const Header = () => (
 			justifyContent: 'center',
 			alignItems: 'center',
 			flexDirection: 'row',
-			paddingBottom: 16
+			paddingVertical: 16
 		}}>
 		<Text style={{ fontFamily: 'JuventusFans-Bold', color: '#FAFAFA', fontSize: 30 }}>JUVENTUS</Text>
 		<Text style={{ fontFamily: 'Oswald-ExtraLight', color: '#FAFAFA', fontSize: 25 }}> TEAM</Text>
