@@ -12,10 +12,12 @@ import {
 import { ScrollView } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import { enableScreens } from 'react-native-screens'
+import { forwards, midfielders, defenders, goalkeepers } from './src/constants/Player'
 enableScreens()
 
 const App = () => {
 	const [ selectedNav, setSelectedNav ] = useState(0)
+	const nav = [ 'home', 'news', 'live', 'statistic', 'table', 'tickets' ]
 	return (
 		<View style={{ backgroundColor: '#030610', flex: 1 }}>
 			<StatusBar barStyle="light-content" backgroundColor="#030610" />
@@ -27,25 +29,82 @@ const App = () => {
 					showsVerticalScrollIndicator={false}
 					stickyHeaderIndices={[ 1 ]}>
 					<Header />
-					<TopNavigation selectedNav={selectedNav} onPress={(key) => setSelectedNav(key)} />
-					<TeamRole role="forward" />
-					<TeamRole role="midfielders" fontStyle={{ left: -66 }} style={{ marginTop: 32 }} />
-					<TeamRole role="defenders" fontStyle={{ left: -50 }} style={{ marginTop: 32 }} />
-					<TeamRole role="goalkeepers" fontStyle={{ left: -66 }} style={{ marginTop: 32 }} />
+					<TopNavigation nav={nav} selectedNav={selectedNav} onPress={(key) => setSelectedNav(key)} />
+					<TeamRole role="forward" data={forwards} />
+					<TeamRole
+						role="midfielders"
+						data={midfielders}
+						fontStyle={{ left: -68 }}
+						style={{ marginTop: 46 }}
+					/>
+					<TeamRole role="defenders" data={defenders} fontStyle={{ left: -55 }} style={{ marginTop: 46 }} />
+					<TeamRole
+						role="goalkeepers"
+						data={goalkeepers}
+						fontStyle={{ left: -74 }}
+						style={{ marginTop: 46 }}
+					/>
 				</ScrollView>
 			</SafeAreaView>
 		</View>
 	)
 }
 
-const TeamRole = ({ role, style, fontStyle }) => {
+const Player = ({ data, index }) => {
+	return (
+		<Pressable>
+			<View style={{ width: 125, height: 200, marginLeft: index === 0 ? 70 : 16 }}>
+				<ImageBackground
+					style={{
+						width: '100%',
+						height: '100%',
+						position: 'absolute',
+						zIndex: 1,
+						justifyContent: 'flex-end'
+					}}
+					source={data.image}
+					resizeMode="cover">
+					<LinearGradient
+						colors={[ 'transparent', '#030610', '#030610', '#030610' ]}
+						style={{
+							paddingBottom: 8,
+							paddingTop: 16,
+							justifyContent: 'center',
+							alignItems: 'center'
+						}}>
+						<Text
+							adjustsFontSizeToFit
+							allowFontScaling
+							style={{ color: '#FAFAFA', fontSize: 12, fontWeight: 'bold' }}>
+							{data.name}
+						</Text>
+					</LinearGradient>
+				</ImageBackground>
+				<Text
+					style={{
+						position: 'absolute',
+						top: -20,
+						left: 5,
+						fontFamily: 'JuventusFans-Bold',
+						color: '#25282A',
+						fontSize: 70,
+						textTransform: 'uppercase'
+					}}>
+					{data.number}
+				</Text>
+			</View>
+		</Pressable>
+	)
+}
+
+const TeamRole = ({ role, style, fontStyle, data }) => {
 	return (
 		<ScrollView
 			horizontal
 			overScrollMode="never"
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}
-			contentContainerStyle={[ { alignItems: 'center' }, style ]}>
+			contentContainerStyle={[ { alignItems: 'center', paddingRight: 20 }, style ]}>
 			<Text
 				adjustsFontSizeToFit
 				allowFontScaling
@@ -63,57 +122,15 @@ const TeamRole = ({ role, style, fontStyle }) => {
 				]}>
 				{role}
 			</Text>
-			<Pressable>
-				<View style={{ width: 125, height: 200, marginLeft: 70 }}>
-					<ImageBackground
-						style={{
-							width: '100%',
-							height: '100%',
-							position: 'absolute',
-							zIndex: 1,
-							justifyContent: 'flex-end'
-						}}
-						source={require('./src/assets/team/RONALDO_501x752.png')}
-						resizeMode="cover">
-						<LinearGradient
-							colors={[ 'transparent', '#030610', '#030610', '#030610' ]}
-							style={{
-								paddingBottom: 8,
-								paddingTop: 16,
-								justifyContent: 'center',
-								alignItems: 'center'
-							}}>
-							<Text
-								adjustsFontSizeToFit
-								allowFontScaling
-								style={{ color: '#FAFAFA', fontSize: 12, fontWeight: 'bold' }}>
-								Cristiano RONALDO
-							</Text>
-						</LinearGradient>
-					</ImageBackground>
-					<Text
-						style={{
-							position: 'absolute',
-							top: -20,
-							left: 5,
-							fontFamily: 'JuventusFans-Bold',
-							color: '#25282A',
-							fontSize: 70,
-							textTransform: 'uppercase'
-						}}>
-						7
-					</Text>
-				</View>
-			</Pressable>
+			{data && data.length > 0 ? data.map((item, i) => <Player key={i} data={item} index={i} />) : null}
 		</ScrollView>
 	)
 }
 
-const TopNavigation = ({ selectedNav, onPress }) => {
+const TopNavigation = ({ selectedNav, onPress, nav }) => {
 	const containerRef = useRef()
 	const navPosition = useRef(new RnAnimated.Value(0)).current
 	const [ measures, setMeasures ] = useState([])
-	const nav = [ 'home', 'news', 'live', 'statistic', 'table', 'tickets' ]
 
 	const data = nav.map((item, i) => ({
 		key: i,
