@@ -1,8 +1,19 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import Animated, { interpolate } from 'react-native-reanimated'
+import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions'
 import Player from '../Player/Player'
-const TeamRole = ({ role, style, fontStyle, data }) => {
+const TeamRole = ({ role, style, fontStyle, data, transition }) => {
+	const width = useWindowDimensions().width
+	const translateY = interpolate(transition, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ -50, 0 ]
+	})
+	const translateX = interpolate(transition, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ width, 0 ]
+	})
 	return (
 		<ScrollView
 			horizontal
@@ -10,7 +21,7 @@ const TeamRole = ({ role, style, fontStyle, data }) => {
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}
 			contentContainerStyle={[ { alignItems: 'center', paddingRight: 20 }, style ]}>
-			<Text
+			<Animated.Text
 				adjustsFontSizeToFit
 				allowFontScaling
 				style={[
@@ -21,13 +32,15 @@ const TeamRole = ({ role, style, fontStyle, data }) => {
 						color: '#25282A',
 						fontSize: 36,
 						textTransform: 'uppercase',
-						transform: [ { rotate: '-90deg' } ]
+						transform: [ { rotate: '-90deg' }, { translateY } ]
 					},
 					fontStyle
 				]}>
 				{role}
-			</Text>
-			{data && data.length > 0 ? data.map((item, i) => <Player key={i} data={item} index={i} />) : null}
+			</Animated.Text>
+			<Animated.View style={{ flexDirection: 'row', transform: [ { translateX } ] }}>
+				{data && data.length > 0 ? data.map((item, i) => <Player key={i} data={item} index={i} />) : null}
+			</Animated.View>
 		</ScrollView>
 	)
 }

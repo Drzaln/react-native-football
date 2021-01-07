@@ -6,7 +6,7 @@ import RenderNav from './RenderNav'
 
 const TopNavigation = ({ selectedNav, onPress, nav }) => {
 	const containerRef = useRef()
-	const transition = useTransition(selectedNav)
+	const transitionNav = useTransition(selectedNav)
 	const [ measures, setMeasures ] = useState([])
 
 	const data = nav.map((item, i) => ({
@@ -51,7 +51,7 @@ const TopNavigation = ({ selectedNav, onPress, nav }) => {
 					/>
 				)
 			})}
-			{measures && measures.length > 0 && <Indicator measures={measures} data={data} navPosition={transition} />}
+			{measures && measures.length > 0 && <Indicator measures={measures} data={data} navPosition={transitionNav} />}
 		</ScrollView>
 	)
 }

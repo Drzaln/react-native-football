@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const Player = ({ data, index }) => {
 	return (
-		<Pressable>
+		<Pressable onPress={() => console.log('pencet')} >
 			<View style={{ width: 125, height: 200, marginLeft: index === 0 ? 70 : 16 }}>
 				<ImageBackground
 					style={{
