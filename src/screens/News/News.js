@@ -48,7 +48,7 @@ const ImageList = ({ data }) => {
 			horizontal
 			overScrollMode="never"
 			contentContainerStyle={{ paddingRight: 16 }}
-			snapToInterval={346}
+			snapToInterval={348}
 			decelerationRate="fast"
 			snapToAlignment="start"
 		/>
