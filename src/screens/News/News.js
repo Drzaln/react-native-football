@@ -5,6 +5,7 @@ import NewsList from '../../components/NewsList/NewsList'
 import TopNavigation from '../../components/TopNavigation/TopNavigation'
 import { useTransition } from 'react-native-redash/lib/module/v1'
 import Animated, { interpolate } from 'react-native-reanimated'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const News = () => {
 	const [ selectedNav, setSelectedNav ] = useState(0)
@@ -76,7 +77,11 @@ const News = () => {
 		}
 	]
 	return (
-		<View>
+		<ScrollView
+			contentContainerStyle={{ paddingVertical: 16, backgroundColor: '#030610' }}
+			overScrollMode="never"
+			showsHorizontalScrollIndicator={false}
+			showsVerticalScrollIndicator={false}>
 			<ImageList data={data} animatedStyle={{ transform: [ { translateX: translateXImage } ] }} />
 			<TopNavigation
 				nav={nav}
@@ -89,7 +94,7 @@ const News = () => {
 			<Animated.View style={{ marginHorizontal: 16, transform: [ { translateY } ] }}>
 				<NewsList newsData={newsData} />
 			</Animated.View>
-		</View>
+		</ScrollView>
 	)
 }
 

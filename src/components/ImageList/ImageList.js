@@ -18,6 +18,8 @@ const ImageList = ({ data, animatedStyle }) => {
 				keyExtractor={(item, index) => item.news + index}
 				horizontal
 				overScrollMode="never"
+				showsHorizontalScrollIndicator={false}
+				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{ paddingRight: 16 }}
 				snapToInterval={imageSize + 18}
 				decelerationRate="fast"

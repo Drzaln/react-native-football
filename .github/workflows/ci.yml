@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - with-navigator
 jobs:
 
   build-android:

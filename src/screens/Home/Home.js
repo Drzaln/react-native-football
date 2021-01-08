@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TeamRole from '../../components/TeamRole/TeamRole'
 import { useTransition } from 'react-native-redash/lib/module/v1'
 import { forwards, midfielders, defenders, goalkeepers } from '../../constants/Player'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Home = () => {
 	const [ show, setShow ] = useState(0)
@@ -15,7 +16,11 @@ const Home = () => {
 	}, [])
 
 	return (
-		<React.Fragment>
+		<ScrollView
+			contentContainerStyle={{ paddingVertical: 16, backgroundColor: '#030610' }}
+			overScrollMode="never"
+			showsHorizontalScrollIndicator={false}
+			showsVerticalScrollIndicator={false}>
 			<TeamRole role="forward" data={forwards} transition={transitionHome} />
 			<TeamRole
 				role="midfielders"
@@ -38,7 +43,7 @@ const Home = () => {
 				style={{ marginTop: 46 }}
 				transition={transitionHome}
 			/>
-		</React.Fragment>
+		</ScrollView>
 	)
 }
 
