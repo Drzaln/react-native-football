@@ -1,7 +1,6 @@
 import React, { createRef, useEffect, useRef, useState, useCallback } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
-import { useTransition } from 'react-native-redash/lib/module/v1'
 import Indicator from './Indicator'
 import RenderNav from './RenderNav'
 
@@ -9,7 +8,6 @@ const TopNavigation = ({ selectedNav, onPress, nav, style, animatedStyle, mode =
 	const [ measures, setMeasures ] = useState([])
 	const [ refresh, setRefresh ] = useState(new Date())
 	const containerRef = useRef()
-	const transitionNav = useTransition(selectedNav)
 
 	const data = nav.map((item, i) => ({
 		key: i,
@@ -64,7 +62,7 @@ const TopNavigation = ({ selectedNav, onPress, nav, style, animatedStyle, mode =
 					)
 				})}
 				{measures && measures.length > 0 ? (
-					<Indicator measures={measures} data={data} navPosition={transitionNav} mode={mode} />
+					<Indicator measures={measures} data={data} selectedNav={selectedNav} mode={mode} />
 				) : null}
 			</ScrollView>
 		</Animated.View>

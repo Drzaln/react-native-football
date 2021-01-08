@@ -1,7 +1,9 @@
 import React from 'react'
 import Animated, { interpolate } from 'react-native-reanimated'
+import { useTransition } from 'react-native-redash/lib/module/v1'
 
-const Indicator = ({ measures, data, navPosition, mode , style }) => {
+const Indicator = ({ measures, data, selectedNav, mode , style }) => {
+	const transitionNav = useTransition(selectedNav)
 	let height = 2
 	let widthIndicator = 6
 	let xRange = 3
@@ -16,11 +18,11 @@ const Indicator = ({ measures, data, navPosition, mode , style }) => {
 	}
 
 	const inputRange = data.map((_, i) => i)
-	const indicatorWidth = interpolate(navPosition, {
+	const indicatorWidth = interpolate(transitionNav, {
 		inputRange,
 		outputRange: measures.map((measure) => measure.width - widthIndicator)
 	})
-	const translateX = interpolate(navPosition, {
+	const translateX = interpolate(transitionNav, {
 		inputRange,
 		outputRange: measures.map((measure) => measure.x + xRange)
 	})
