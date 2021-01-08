@@ -5,9 +5,10 @@ import Indicator from './Indicator'
 import RenderNav from './RenderNav'
 
 const TopNavigation = ({ selectedNav, onPress, nav, style, mode = 'underline' || 'block' }) => {
+	const [ measures, setMeasures ] = useState([])
+	const [ refresh, setRefresh ] = useState(new Date())
 	const containerRef = useRef()
 	const transitionNav = useTransition(selectedNav)
-	const [ measures, setMeasures ] = useState([])
 
 	const data = nav.map((item, i) => ({
 		key: i,
@@ -16,18 +17,25 @@ const TopNavigation = ({ selectedNav, onPress, nav, style, mode = 'underline' ||
 	}))
 
 	useEffect(() => {
-		let m = []
-		if (data && data.length > 0) {
-			data.forEach((item) => {
-				item.ref.current.measureLayout(containerRef.current, (x, y, width, height) => {
-					m.push({ x, y, width, height })
-					if (m.length === data.length) {
-						setMeasures(m)
-					}
-				})
-			})
-		}
+		setRefresh(new Date())
 	}, [])
+
+	useEffect(
+		() => {
+			let m = []
+			if (data && data.length > 0) {
+				data.forEach((item) => {
+					item.ref.current.measureLayout(containerRef.current, (x, y, width, height) => {
+						m.push({ x, y, width, height })
+						if (m.length === data.length) {
+							setMeasures(m)
+						}
+					})
+				})
+			}
+		},
+		[ refresh ]
+	)
 
 	const changeNav = useCallback((key) => {
 		onPress(key)
@@ -53,10 +61,9 @@ const TopNavigation = ({ selectedNav, onPress, nav, style, mode = 'underline' ||
 					/>
 				)
 			})}
-			{measures &&
-			measures.length > 0 && (
+			{measures && measures.length > 0 ? (
 				<Indicator measures={measures} data={data} navPosition={transitionNav} mode={mode} />
-			)}
+			) : null}
 		</ScrollView>
 	)
 }
