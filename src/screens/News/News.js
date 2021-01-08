@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, Image } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
+import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions'
 import TopNavigation from '../../components/TopNavigation/TopNavigation'
 
 const News = () => {
@@ -23,7 +24,7 @@ const News = () => {
 	return (
 		<View>
 			<ImageList data={data} />
-			<View style={{marginTop: 16}} >
+			<View style={{ marginTop: 16 }}>
 				<TopNavigation
 					nav={nav}
 					selectedNav={selectedNav}
@@ -39,7 +40,11 @@ const News = () => {
 export default React.memo(News)
 
 const ImageList = ({ data }) => {
-	const renderItem = ({ item }) => <ImageItem item={item} />
+	const { width } = useWindowDimensions()
+	const imageSize = Math.round(width - 81)
+
+	const renderItem = ({ item }) => <ImageItem item={item} imageSize={imageSize} />
+
 	return (
 		<FlatList
 			data={data}
@@ -48,17 +53,17 @@ const ImageList = ({ data }) => {
 			horizontal
 			overScrollMode="never"
 			contentContainerStyle={{ paddingRight: 16 }}
-			snapToInterval={348}
+			snapToInterval={imageSize + 18}
 			decelerationRate="fast"
 			snapToAlignment="start"
 		/>
 	)
 }
 
-const ImageItem = ({ item }) => {
+const ImageItem = ({ item, imageSize }) => {
 	return (
 		<View style={{ flexWrap: 'wrap', marginLeft: 16, width: 330 }}>
-			<View style={{ backgroundColor: 'grey', height: 209, width: 330 }}>
+			<View style={{ backgroundColor: 'grey', height: imageSize - 121, width: imageSize }}>
 				<Image style={{ width: '100%', height: '100%' }} source={item.image} resizeMode="cover" />
 			</View>
 			<View>
