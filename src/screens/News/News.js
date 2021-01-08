@@ -1,12 +1,39 @@
-import React, { useState } from 'react'
-import { View, Text, Image } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
-import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions'
+import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
+import ImageList from '../../components/ImageList/ImageList'
+import NewsList from '../../components/NewsList/NewsList'
 import TopNavigation from '../../components/TopNavigation/TopNavigation'
+import { useTransition } from 'react-native-redash/lib/module/v1'
+import Animated, { interpolate } from 'react-native-reanimated'
 
 const News = () => {
 	const [ selectedNav, setSelectedNav ] = useState(0)
+	const [ show, setShow ] = useState(0)
+	const transitionNews = useTransition(show)
 	const nav = [ 'team', 'club', 'youth' ]
+
+	useEffect(() => {
+		setShow(1)
+		return () => {
+			setShow(0)
+		}
+	}, [])
+
+	const translateX = interpolate(transitionNews, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ -500, 0 ]
+	})
+
+	const translateY = interpolate(transitionNews, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ 500, 0 ]
+	})
+
+	const translateXImage = interpolate(transitionNews, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ 500, 0 ]
+	})
+
 	const data = [
 		{
 			image: require('../../assets/news/chiellini.jpg'),
@@ -21,54 +48,49 @@ const News = () => {
 			news: 'Allegri: "We did well to stay in the game with ten men"'
 		}
 	]
+	const newsData = [
+		{
+			image: require('../../assets/news/chiellini.jpg'),
+			headline: `Douglas Costa: "We make the difference in the key moments"`,
+			desc: 'The Portuguese defender underwent a medial selective menisectomy on his right knee'
+		},
+		{
+			image: require('../../assets/news/ALEX.png'),
+			headline: `Allegri named best manager in Italy for the fourth time!`,
+			desc: `The Juventus coach has been awarded his fourth Panchina d'Oro`
+		},
+		{
+			image: require('../../assets/news/atalanta-juventus_allegri.jpg'),
+			headline: `Allegri: “Ronaldo deserves the Ballon d'Or”`,
+			desc: `Comments from the coach, Pjanic and Bentancur as they speak to the media at adidas 'Here To Create' event in Milan`
+		},
+		{
+			image: require('../../assets/news/matuidi.jpg'),
+			headline: `France and Brazil win Bianconeri derbies`,
+			desc: `Matuidi's France defeat Can's Germany in the Nations League, whilst Alex Sandro's Brazil overcome Dybala's Argentina`
+		},
+		{
+			image: require('../../assets/news/batch.jpg'),
+			headline: `Ronaldo nominated for UEFA Men's Player of the Year`,
+			desc: 'The Juventus number seven has been selected on a three-man UEFA shortlist for the prize'
+		}
+	]
 	return (
 		<View>
-			<ImageList data={data} />
-			<View style={{ marginTop: 16 }}>
-				<TopNavigation
-					nav={nav}
-					selectedNav={selectedNav}
-					mode="block"
-					style={{ marginLeft: 8 }}
-					onPress={(key) => setSelectedNav(key)}
-				/>
-			</View>
+			<ImageList data={data} animatedStyle={{ transform: [ { translateX: translateXImage } ] }} />
+			<TopNavigation
+				nav={nav}
+				selectedNav={selectedNav}
+				mode="block"
+				style={{ marginLeft: 8, marginVertical: 16 }}
+				animatedStyle={{ transform: [ { translateX } ] }}
+				onPress={(key) => setSelectedNav(key)}
+			/>
+			<Animated.View style={{ marginHorizontal: 16, transform: [ { translateY } ] }}>
+				<NewsList newsData={newsData} />
+			</Animated.View>
 		</View>
 	)
 }
 
 export default React.memo(News)
-
-const ImageList = ({ data }) => {
-	const { width } = useWindowDimensions()
-	const imageSize = Math.round(width - 81)
-
-	const renderItem = ({ item }) => <ImageItem item={item} imageSize={imageSize} />
-
-	return (
-		<FlatList
-			data={data}
-			renderItem={renderItem}
-			keyExtractor={(item, index) => item.news + index}
-			horizontal
-			overScrollMode="never"
-			contentContainerStyle={{ paddingRight: 16 }}
-			snapToInterval={imageSize + 18}
-			decelerationRate="fast"
-			snapToAlignment="start"
-		/>
-	)
-}
-
-const ImageItem = ({ item, imageSize }) => {
-	return (
-		<View style={{ flexWrap: 'wrap', marginLeft: 16, width: 330 }}>
-			<View style={{ backgroundColor: 'grey', height: imageSize - 121, width: imageSize }}>
-				<Image style={{ width: '100%', height: '100%' }} source={item.image} resizeMode="cover" />
-			</View>
-			<View>
-				<Text style={{ color: '#FAFAFA', fontSize: 22, fontFamily: 'Oswald-Medium' }}>{item.news}</Text>
-			</View>
-		</View>
-	)
-}
