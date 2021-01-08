@@ -4,7 +4,7 @@ import { useTransition } from 'react-native-redash/lib/module/v1'
 import Indicator from './Indicator'
 import RenderNav from './RenderNav'
 
-const TopNavigation = ({ selectedNav, onPress, nav }) => {
+const TopNavigation = ({ selectedNav, onPress, nav, style, mode = 'underline' || 'block' }) => {
 	const containerRef = useRef()
 	const transitionNav = useTransition(selectedNav)
 	const [ measures, setMeasures ] = useState([])
@@ -40,18 +40,23 @@ const TopNavigation = ({ selectedNav, onPress, nav }) => {
 			overScrollMode="never"
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}
+			style={style}
 			contentContainerStyle={{ backgroundColor: '#030610', paddingVertical: 16 }}>
 			{data.map((item) => {
 				return (
 					<RenderNav
 						key={item.key}
 						item={item}
+						mode={mode}
 						selectedNav={selectedNav}
 						onPress={() => changeNav(item.key)}
 					/>
 				)
 			})}
-			{measures && measures.length > 0 && <Indicator measures={measures} data={data} navPosition={transitionNav} />}
+			{measures &&
+			measures.length > 0 && (
+				<Indicator measures={measures} data={data} navPosition={transitionNav} mode={mode} />
+			)}
 		</ScrollView>
 	)
 }
