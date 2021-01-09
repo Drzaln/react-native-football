@@ -6,11 +6,9 @@ import { enableScreens } from 'react-native-screens'
 import Home from './src/screens/Home/Home'
 import Header from './src/components/Header/Header'
 import News from './src/screens/News/News'
-import { TouchableOpacity, View } from 'react-native'
-import Animated from 'react-native-reanimated'
-import TopNavigation from './src/components/TopNavigation/TopNavigation'
+import { Text, TouchableOpacity, View } from 'react-native'
+import Indicator from './src/components/TopNavigation/Indicator'
 import { ScrollView } from 'react-native-gesture-handler'
-import RenderNav from './src/components/TopNavigation/RenderNav'
 enableScreens()
 
 const App = () => {
@@ -40,9 +38,10 @@ const MyStack = () => {
 
 const Tab = createMaterialTopTabNavigator()
 
-function MyTabBar({ state, descriptors, navigation, position }) {
+function MyTabBar({ state, navigation }) {
 	const [ measures, setMeasures ] = useState([])
 	const [ refresh, setRefresh ] = useState(new Date())
+	const isSelected = useRef()
 	const containerRef = useRef()
 	const data = state.routes.map((item, i) => ({
 		key: i,
@@ -50,9 +49,12 @@ function MyTabBar({ state, descriptors, navigation, position }) {
 		route: item,
 		ref: createRef()
 	}))
-	useEffect(() => {
-		setRefresh(new Date())
-	}, [])
+	useEffect(
+		() => {
+			setRefresh(new Date())
+		},
+		[ isSelected.current ]
+	)
 
 	useEffect(
 		() => {
@@ -71,83 +73,61 @@ function MyTabBar({ state, descriptors, navigation, position }) {
 		[ refresh ]
 	)
 	return (
-		<ScrollView
-			ref={containerRef}
-			horizontal
-			overScrollMode="never"
-			showsHorizontalScrollIndicator={false}
-			showsVerticalScrollIndicator={false}
-			// style={style}
-			contentContainerStyle={{ backgroundColor: '#030610', paddingVertical: 16 }}>
-			{data.map((route, index) => {
-				const { options } = descriptors[route.route.key]
-				const label =
-					options.tabBarLabel !== undefined
-						? options.tabBarLabel
-						: options.title !== undefined ? options.title : route.name
-
-				const isFocused = state.index === index
-
-				const onPress = () => {
-					const event = navigation.emit({
-						type: 'tabPress',
-						target: route.route.key
-					})
-
-					if (!isFocused && !event.defaultPrevented) {
-						navigation.navigate(route.route.name)
+		<View>
+			<ScrollView
+				ref={containerRef}
+				horizontal
+				overScrollMode="never"
+				showsHorizontalScrollIndicator={false}
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{ backgroundColor: '#030610', paddingVertical: 16 }}>
+				{data.map((route, index) => {
+					const isFocused = state.index === index
+					if (state.index === index) {
+						isSelected.current = index
 					}
-				}
 
-				const onLongPress = () => {
-					navigation.emit({
-						type: 'tabLongPress',
-						target: route.key
+					const onPress = useCallback(() => {
+						const event = navigation.emit({
+							type: 'tabPress',
+							target: route.route.key
+						})
+
+						if (!isFocused && !event.defaultPrevented) {
+							navigation.navigate(route.route.name)
+						}
 					})
-				}
-				// modify inputRange for custom behavior
-				const inputRange = state.routes.map((_, i) => i)
-				const opacity = Animated.interpolate(position, {
-					inputRange,
-					outputRange: inputRange.map((i) => (i === index ? 1 : 0))
-				})
 
-				const changeNav = useCallback((key) => {
-					onPress(key)
-				}, [])
-
-				// return (
-				// 	<TouchableOpacity
-				// 		accessibilityRole="button"
-				// 		accessibilityState={isFocused ? { selected: true } : {}}
-				// 		accessibilityLabel={options.tabBarAccessibilityLabel}
-				// 		testID={options.tabBarTestID}
-				// 		onPress={onPress}
-				// 		onLongPress={onLongPress}
-				// 		style={{ flex: 1 }}>
-				// 		<Animated.Text style={{ opacity }}>{label}</Animated.Text>
-				// 	</TouchableOpacity>
-				// )
-				return (
-					<RenderNav
-						key={index}
-						item={route}
-						mode='underline'
-						selectedNav={0}
-						onPress={() => changeNav()}
-					/>
-				)
-			})}
-			{/* {measures && measures.length > 0 ? (
-					<Indicator measures={measures} data={data} navPosition={transitionNav} mode={mode} />
-				) : null} */}
-		</ScrollView>
+					return (
+						<TouchableOpacity key={index} onPress={onPress}>
+							<View ref={route.ref} style={{ marginHorizontal: 16 }}>
+								<Text
+									style={{
+										fontFamily: 'Oswald-Regular',
+										color: isFocused ? '#FAFAFA' : '#3E4346',
+										fontSize: 16,
+										textTransform: 'uppercase'
+									}}>
+									{route.title}
+								</Text>
+							</View>
+						</TouchableOpacity>
+					)
+				})}
+				{measures && measures.length > 0 ? (
+					<Indicator measures={measures} data={data} selectedNav={isSelected.current} mode="underline" />
+				) : null}
+			</ScrollView>
+		</View>
 	)
 }
 
 const HomeTab = () => {
 	return (
-		<Tab.Navigator swipeEnabled={false} tabBar={(props) => <MyTabBar {...props} />}>
+		<Tab.Navigator
+			swipeEnabled={false}
+			tabBarOptions={{ scrollEnabled: true }}
+			tabBar={(props) => <MyTabBar {...props} />}>
 			<Tab.Screen name="Home" component={Home} />
 			<Tab.Screen name="News" component={News} />
 			<Tab.Screen name="live" component={News} />
