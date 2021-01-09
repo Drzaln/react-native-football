@@ -44,6 +44,7 @@ const HomeTab = () => {
 			initialRouteName='home'
 			backBehavior='initialRoute'
 			removeClippedSubviews={true}
+			sceneContainerStyle={{ backgroundColor: '#030610' }}
 			tabBarOptions={{ scrollEnabled: true }}
 			tabBar={(props) => <MyTabBar {...props} />}>
 			<Tab.Screen name='home' component={Home} />
