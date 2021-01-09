@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import React, { useState } from 'react'
 import ImageList from '../../components/ImageList/ImageList'
 import NewsList from '../../components/NewsList/NewsList'
 import TopNavigation from '../../components/TopNavigation/TopNavigation'
@@ -7,12 +6,13 @@ import { useTransition } from 'react-native-redash/lib/module/v1'
 import Animated, { interpolate } from 'react-native-reanimated'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useFocusEffect } from '@react-navigation/native'
+import { data, newsData } from '../../constants/News'
 
 const News = () => {
 	const [ selectedNav, setSelectedNav ] = useState(0)
 	const [ show, setShow ] = useState(0)
 	const config = {
-		duration: 100
+		duration: 200
 	}
 	const transitionNews = useTransition(show, config)
 	const nav = [ 'team', 'club', 'youth' ]
@@ -41,47 +41,6 @@ const News = () => {
 		outputRange: [ 500, 0 ]
 	})
 
-	const data = [
-		{
-			image: require('../../assets/news/chiellini.jpg'),
-			news: 'Chiellini praises Juve composure despite dropped points'
-		},
-		{
-			image: require('../../assets/news/ALEX.png'),
-			news: 'Juventus defender Alex Sandro contracts COVID-19'
-		},
-		{
-			image: require('../../assets/news/atalanta-juventus_allegri.jpg'),
-			news: 'Allegri: "We did well to stay in the game with ten men"'
-		}
-	]
-	const newsData = [
-		{
-			image: require('../../assets/news/chiellini.jpg'),
-			headline: `Douglas Costa: "We make the difference in the key moments"`,
-			desc: 'The Portuguese defender underwent a medial selective menisectomy on his right knee'
-		},
-		{
-			image: require('../../assets/news/ALEX.png'),
-			headline: `Allegri named best manager in Italy for the fourth time!`,
-			desc: `The Juventus coach has been awarded his fourth Panchina d'Oro`
-		},
-		{
-			image: require('../../assets/news/atalanta-juventus_allegri.jpg'),
-			headline: `Allegri: “Ronaldo deserves the Ballon d'Or”`,
-			desc: `Comments from the coach, Pjanic and Bentancur as they speak to the media at adidas 'Here To Create' event in Milan`
-		},
-		{
-			image: require('../../assets/news/matuidi.jpg'),
-			headline: `France and Brazil win Bianconeri derbies`,
-			desc: `Matuidi's France defeat Can's Germany in the Nations League, whilst Alex Sandro's Brazil overcome Dybala's Argentina`
-		},
-		{
-			image: require('../../assets/news/batch.jpg'),
-			headline: `Ronaldo nominated for UEFA Men's Player of the Year`,
-			desc: 'The Juventus number seven has been selected on a three-man UEFA shortlist for the prize'
-		}
-	]
 	return (
 		<ScrollView
 			contentContainerStyle={{ paddingVertical: 16, backgroundColor: '#030610' }}

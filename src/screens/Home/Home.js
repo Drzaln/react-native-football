@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native'
 const Home = () => {
 	const [ show, setShow ] = useState(0)
 	const config = {
-		duration: 100
+		duration: 200
 	}
 	const transitionHome = useTransition(show, config)
 
