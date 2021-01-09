@@ -6,19 +6,25 @@ import TopNavigation from '../../components/TopNavigation/TopNavigation'
 import { useTransition } from 'react-native-redash/lib/module/v1'
 import Animated, { interpolate } from 'react-native-reanimated'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useFocusEffect } from '@react-navigation/native'
 
 const News = () => {
 	const [ selectedNav, setSelectedNav ] = useState(0)
 	const [ show, setShow ] = useState(0)
-	const transitionNews = useTransition(show)
+	const config = {
+		duration: 100
+	}
+	const transitionNews = useTransition(show, config)
 	const nav = [ 'team', 'club', 'youth' ]
 
-	useEffect(() => {
-		setShow(1)
-		return () => {
-			setShow(0)
-		}
-	}, [])
+	useFocusEffect(
+		React.useCallback(() => {
+			setShow(1)
+			return () => {
+				setShow(0)
+			}
+		}, [])
+	)
 
 	const translateX = interpolate(transitionNews, {
 		inputRange: [ 0, 1 ],
@@ -79,14 +85,14 @@ const News = () => {
 	return (
 		<ScrollView
 			contentContainerStyle={{ paddingVertical: 16, backgroundColor: '#030610' }}
-			overScrollMode="never"
+			overScrollMode='never'
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}>
 			<ImageList data={data} animatedStyle={{ transform: [ { translateX: translateXImage } ] }} />
 			<TopNavigation
 				nav={nav}
 				selectedNav={selectedNav}
-				mode="block"
+				mode='block'
 				style={{ marginLeft: 8, marginVertical: 16 }}
 				animatedStyle={{ transform: [ { translateX } ] }}
 				onPress={(key) => setSelectedNav(key)}

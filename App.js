@@ -28,8 +28,8 @@ const MyStack = () => {
 					return <Header />
 				}
 			}}
-			headerMode="screen">
-			<Stack.Screen name="Home" component={HomeTab} />
+			headerMode='screen'>
+			<Stack.Screen name='Home' component={HomeTab} />
 		</Stack.Navigator>
 	)
 }
@@ -39,15 +39,19 @@ const Tab = createMaterialTopTabNavigator()
 const HomeTab = () => {
 	return (
 		<Tab.Navigator
+			timingConfig={{ duration: 1 }}
 			swipeEnabled={false}
+			initialRouteName='home'
+			backBehavior='initialRoute'
+			removeClippedSubviews={true}
 			tabBarOptions={{ scrollEnabled: true }}
 			tabBar={(props) => <MyTabBar {...props} />}>
-			<Tab.Screen name="Home" component={Home} />
-			<Tab.Screen name="News" component={News} />
-			<Tab.Screen name="live" component={News} />
-			<Tab.Screen name="statistic" component={News} />
-			<Tab.Screen name="table" component={News} />
-			<Tab.Screen name="tickets" component={News} />
+			<Tab.Screen name='home' component={Home} />
+			<Tab.Screen name='news' component={News} />
+			<Tab.Screen name='live' component={News} />
+			<Tab.Screen name='statistic' component={News} />
+			<Tab.Screen name='table' component={News} />
+			<Tab.Screen name='tickets' component={News} />
 		</Tab.Navigator>
 	)
 }
