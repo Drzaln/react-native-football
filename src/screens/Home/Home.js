@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import TeamRole from '../../components/TeamRole/TeamRole'
 import { useTransition } from 'react-native-redash/lib/module/v1'
 import { forwards, midfielders, defenders, goalkeepers } from '../../constants/Player'

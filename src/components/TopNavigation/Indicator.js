@@ -2,7 +2,7 @@ import React from 'react'
 import Animated, { interpolate } from 'react-native-reanimated'
 import { useTransition } from 'react-native-redash/lib/module/v1'
 
-const Indicator = ({ measures, data, selectedNav, mode , style }) => {
+const Indicator = ({ measures, data, selectedNav, mode, style }) => {
 	const transitionNav = useTransition(selectedNav)
 	let height = 2
 	let widthIndicator = 6
@@ -10,7 +10,7 @@ const Indicator = ({ measures, data, selectedNav, mode , style }) => {
 	let bottom = 13
 	let background = '#FAFAFA'
 
-	if (mode === 'block') {
+	if (mode === 'block' || mode === 'blokline') {
 		;(height = 25), (widthIndicator = -20)
 		bottom = 15
 		xRange = -9

@@ -1,4 +1,5 @@
 import React, { createRef, useEffect, useRef, useState, useCallback } from 'react'
+import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 import Indicator from './Indicator'
@@ -8,7 +9,6 @@ const TopNavigation = ({ selectedNav, onPress, nav, style, animatedStyle, mode =
 	const [ measures, setMeasures ] = useState([])
 	const [ refresh, setRefresh ] = useState(new Date())
 	const containerRef = useRef()
-	
 
 	const data = nav.map((item, i) => ({
 		key: i,
@@ -46,7 +46,7 @@ const TopNavigation = ({ selectedNav, onPress, nav, style, animatedStyle, mode =
 			<ScrollView
 				ref={containerRef}
 				horizontal
-				overScrollMode="never"
+				overScrollMode='never'
 				showsHorizontalScrollIndicator={false}
 				showsVerticalScrollIndicator={false}
 				style={style}
@@ -64,6 +64,17 @@ const TopNavigation = ({ selectedNav, onPress, nav, style, animatedStyle, mode =
 				})}
 				{measures && measures.length > 0 ? (
 					<Indicator measures={measures} data={data} selectedNav={selectedNav} mode={mode} />
+				) : null}
+				{mode === 'blokline' ? (
+					<View
+						style={{
+							width: '100%',
+							height: 2,
+							backgroundColor: '#FFC93C',
+							position: 'absolute',
+							bottom: 15
+						}}
+					/>
 				) : null}
 			</ScrollView>
 		</Animated.View>
