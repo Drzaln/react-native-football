@@ -8,6 +8,8 @@ import Header from './src/components/Header/Header'
 import News from './src/screens/News/News'
 import MyTabBar from './src/components/MyTabBar/MyTabBar'
 import Live from './src/screens/Live/Live'
+import Statistic from './src/screens/Statistic/Statistic'
+import Blank from './src/screens/Blank/Blank'
 enableScreens()
 
 const App = () => {
@@ -51,9 +53,9 @@ const HomeTab = () => {
 			<Tab.Screen name='home' component={Home} />
 			<Tab.Screen name='news' component={News} />
 			<Tab.Screen name='live' component={Live} />
-			<Tab.Screen name='statistic' component={News} />
-			<Tab.Screen name='table' component={News} />
-			<Tab.Screen name='tickets' component={News} />
+			<Tab.Screen name='statistic' component={Statistic} />
+			<Tab.Screen name='table' component={Blank} />
+			<Tab.Screen name='tickets' component={Blank} />
 		</Tab.Navigator>
 	)
 }
