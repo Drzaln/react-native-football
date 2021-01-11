@@ -22,10 +22,10 @@ const Blank = () => {
 			overScrollMode='never'
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}>
-			{/* <Text style={{ fontFamily: 'JuventusFans-Bold', color: '#3E4346', fontSize: 64 }}>J</Text> */}
-            {data.map((p, i) => {
+			<Text style={{ fontFamily: 'JuventusFans-Bold', color: '#3E4346', fontSize: 64 }}>J</Text>
+            {/* {data.map((p, i) => {
                 return <Donut key={i} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} strokeWidth={6} radius={40} />
-            })}
+            })} */}
 		</ScrollView>
 	)
 }
