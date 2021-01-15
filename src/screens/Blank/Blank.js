@@ -1,135 +1,138 @@
-import React from 'react'
-import { Animated, Easing, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useMemo } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import Svg, { Circle, G } from 'react-native-svg'
+import Svg, { Circle } from 'react-native-svg'
+import Animated, { interpolate, multiply, concat, set, useCode, block } from 'react-native-reanimated'
+import { clamp, timing, toRad, useValue } from 'react-native-redash/lib/module/v1'
+import AnimateableText from 'react-native-animateable-text'
+import { useFocusEffect } from '@react-navigation/native'
 
-const data = [{
-    percentage: 75,
-    color: '#FFC93C',
-    max: 100
-  }]
+const data = [
+	{
+		percentage: 75,
+		color: '#FFC93C',
+		max: 100
+	}
+]
 
 const Blank = () => {
+	const progress = 75
 	return (
 		<ScrollView
 			contentContainerStyle={{
 				paddingVertical: 16,
 				backgroundColor: '#030610',
 				justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1
+				alignItems: 'center',
+				flex: 1
 			}}
 			overScrollMode='never'
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}>
-			<Text style={{ fontFamily: 'JuventusFans-Bold', color: '#3E4346', fontSize: 64 }}>J</Text>
-            {/* {data.map((p, i) => {
-                return <Donut key={i} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} strokeWidth={6} radius={40} />
-            })} */}
+			{/* <Text style={{ fontFamily: 'JuventusFans-Bold', color: '#3E4346', fontSize: 64 }}>J</Text> */}
+			<CircleComponent percent={progress} />
 		</ScrollView>
 	)
 }
 
 export default Blank
 
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+//DISINI
 
-const Donut = ({
-    percentage = 75,
-    radius = 40,
-    strokeWidth = 10,
-    duration = 500,
-    color = "tomato",
-    delay = 0,
-    textColor,
-    max = 100
-  }) => {
-    const animated = React.useRef(new Animated.Value(0)).current;
-    const circleRef = React.useRef();
-    const inputRef = React.useRef();
-    const circumference = 2 * Math.PI * radius;
-    const halfCircle = radius + strokeWidth;
-  
-    const animation = (toValue) => {
-      return Animated.timing(animated, {
-        delay: 2000,
-        toValue,
-        duration,
-        useNativeDriver: true,
-      }).start();
-    };
-  
-    React.useEffect(() => {
-      animation(percentage);
-      animated.addListener((v) => {
-        const maxPerc = 100 * v.value / max;
-        const strokeDashoffset = circumference - (circumference * maxPerc) / 100;
-        if (inputRef?.current) {
-          inputRef.current.setNativeProps({
-            text: `${Math.round(v.value)}%`,
-          });
-        }
-        if (circleRef?.current) {
-          circleRef.current.setNativeProps({
-            strokeDashoffset,
-          });
-        }
-      }, [max, percentage]);
-  
-      return () => {
-        animated.removeAllListeners();
-      };
-    });
-  
-    return (
-      <View style={{ width: radius * 2, height: radius * 2 }}>
-        <Svg
-          height={radius * 2}
-          width={radius * 2}
-          viewBox={`0 0 ${halfCircle * 2} ${halfCircle * 2}`}>
-          <G
-            rotation="-90"
-            origin={`${halfCircle}, ${halfCircle}`}>
-            <Circle
-              ref={circleRef}
-              cx="50%"
-              cy="50%"
-              r={radius}
-              fill="transparent"
-              stroke={color}
-              strokeWidth={strokeWidth}
-              strokeLinecap="square"
-              strokeDashoffset={circumference}
-              strokeDasharray={circumference}
-            />
-            <Circle
-              cx="50%"
-              cy="50%"
-              r={radius}
-              fill="transparent"
-              stroke={color}
-              strokeWidth={strokeWidth}
-              strokeLinejoin="round"
-              strokeOpacity=".1"
-            />
-          </G>
-        </Svg>
-        <AnimatedTextInput
-          ref={inputRef}
-          underlineColorAndroid="transparent"
-          editable={false}
-          defaultValue="0"
-          style={[
-            StyleSheet.absoluteFillObject,
-            { fontSize: radius / 2, color: textColor ?? color },
-            styles.text,
-          ]}
-        />
-      </View>
-    );
-  }
-  
-  const styles = StyleSheet.create({
-    text: { fontWeight: '900', textAlign: 'center' },
-  });
-  
+const AnimatedCircle = Animated.createAnimatedComponent(Circle)
+const AnimatedSVG = Animated.createAnimatedComponent(Svg)
+
+const styles = StyleSheet.create({
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		transform: [ { rotate: '-90deg' } ]
+	}
+})
+
+const CircleComponent = ({
+	percent = 75,
+	duration = 10000,
+	bgStrokeColor = '#3E4346',
+	radius = 40,
+	isRadius = false,
+	strokeColor = '#FFC93C',
+	strokeWidth = 6,
+	maxProgress = 100,
+	minProgress = 0
+}) => {
+	const progressAnimated = useValue(0)
+	const progressSpin = useValue(0)
+	const actualProgress = clamp(progressAnimated, minProgress, maxProgress)
+
+	//effect
+	useCode(() => [ set(progressAnimated, timing({ from: progressAnimated, to: percent, duration })) ], [ percent ])
+
+	useCode(() => [ set(progressSpin, timing({ from: progressSpin, to: percent })) ], [])
+
+	// useFocusEffect(
+	// 	React.useCallback(
+	// 		() => {
+	// 			block([set(progressAnimated, timing({ from: progressAnimated, to: percent, duration }))])
+	// 		},
+	// 		[ percent ]
+	// 	)
+	// )
+
+	// useFocusEffect(
+	// 	React.useCallback(() => {
+	// 		block([set(progressSpin, timing({ from: progressSpin, to: percent }))])
+	// 	}, [])
+	// )
+
+	// variable
+	const strokeDasharray = useMemo(() => `${radius * 2 * Math.PI} ${radius * 2 * Math.PI}`, [ radius ])
+	const alpha = interpolate(actualProgress, {
+		inputRange: [ minProgress, maxProgress ],
+		outputRange: [ Math.PI * 2, 0 ]
+	})
+	const strokeDashoffset = multiply(alpha, radius)
+
+	// style
+	const svgStyle = [
+		{
+			transform: [
+				{ rotate: interpolate(progressSpin, { inputRange: [ 0, 1 ], outputRange: [ toRad(0), Math.PI * 2 ] }) }
+			]
+		}
+	]
+	return (
+		<View style={[ styles.container ]}>
+			<AnimatedSVG width={radius * 2 + strokeWidth} height={radius * 2 + strokeWidth} style={svgStyle}>
+				<AnimatedCircle
+					r={radius}
+					x={radius + strokeWidth / 2}
+					y={radius + strokeWidth / 2}
+					stroke={bgStrokeColor}
+					strokeWidth={strokeWidth}
+				/>
+				<AnimatedCircle
+					strokeLinecap={isRadius ? 'round' : undefined}
+					strokeDashoffset={strokeDashoffset}
+					strokeDasharray={strokeDasharray}
+					r={radius}
+					x={radius + strokeWidth / 2}
+					y={radius + strokeWidth / 2}
+					stroke={strokeColor}
+					strokeWidth={strokeWidth}
+				/>
+			</AnimatedSVG>
+			<AnimateableText
+				text={concat(actualProgress, '%')}
+				style={{
+					fontFamily: 'Oswald-Medium',
+					color: '#FFC93C',
+					fontSize: 18,
+					textAlign: 'center',
+					position: 'absolute',
+					transform: [ { rotate: '90deg' } ]
+				}}
+			/>
+		</View>
+	)
+}

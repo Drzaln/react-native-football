@@ -69,11 +69,29 @@ const StatBar = ({
 				/>
 			</View>
 			<View style={{ flexDirection: 'row' }}>
-				<View style={{ height: 10, backgroundColor: '#3E4346', flex: 1, alignItems: 'flex-end' }}>
-					<Animated.View style={{ height: 10, backgroundColor: '#FFC93C', width: concat(leftWidth, '%') }} />
+				<View
+					style={{
+						height: 10,
+						backgroundColor: '#3E4346',
+						flex: 1,
+						alignItems: 'flex-end'
+					}}>
+					<Animated.View
+						style={{
+							height: 10,
+							backgroundColor: '#FFC93C',
+							width: concat(leftWidth, '%')
+						}}
+					/>
 				</View>
 				<View style={{ height: 10, backgroundColor: '#3E4346', flex: 1 }}>
-					<Animated.View style={{ height: 10, backgroundColor: '#FFC93C', width: concat(rightWidth, '%') }} />
+					<Animated.View
+						style={{
+							height: 10,
+							backgroundColor: '#FFC93C',
+							width: concat(rightWidth, '%')
+						}}
+					/>
 				</View>
 			</View>
 		</View>
