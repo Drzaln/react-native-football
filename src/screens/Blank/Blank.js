@@ -1,22 +1,12 @@
 import React, { useMemo } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Svg, { Circle } from 'react-native-svg'
-import Animated, { interpolate, multiply, concat, set, useCode, block } from 'react-native-reanimated'
+import Animated, { interpolate, multiply, concat, set, useCode } from 'react-native-reanimated'
 import { clamp, timing, toRad, useValue } from 'react-native-redash/lib/module/v1'
 import AnimateableText from 'react-native-animateable-text'
-import { useFocusEffect } from '@react-navigation/native'
-
-const data = [
-	{
-		percentage: 75,
-		color: '#FFC93C',
-		max: 100
-	}
-]
 
 const Blank = () => {
-	const progress = 75
 	return (
 		<ScrollView
 			contentContainerStyle={{
@@ -29,8 +19,8 @@ const Blank = () => {
 			overScrollMode='never'
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}>
-			{/* <Text style={{ fontFamily: 'JuventusFans-Bold', color: '#3E4346', fontSize: 64 }}>J</Text> */}
-			<CircleComponent percent={progress} />
+			<Text style={{ fontFamily: 'JuventusFans-Bold', color: '#3E4346', fontSize: 64 }}>J</Text>
+			{/* <CircleComponent percent={progress} /> */}
 		</ScrollView>
 	)
 }
@@ -67,23 +57,7 @@ const CircleComponent = ({
 
 	//effect
 	useCode(() => [ set(progressAnimated, timing({ from: progressAnimated, to: percent, duration })) ], [ percent ])
-
 	useCode(() => [ set(progressSpin, timing({ from: progressSpin, to: percent })) ], [])
-
-	// useFocusEffect(
-	// 	React.useCallback(
-	// 		() => {
-	// 			block([set(progressAnimated, timing({ from: progressAnimated, to: percent, duration }))])
-	// 		},
-	// 		[ percent ]
-	// 	)
-	// )
-
-	// useFocusEffect(
-	// 	React.useCallback(() => {
-	// 		block([set(progressSpin, timing({ from: progressSpin, to: percent }))])
-	// 	}, [])
-	// )
 
 	// variable
 	const strokeDasharray = useMemo(() => `${radius * 2 * Math.PI} ${radius * 2 * Math.PI}`, [ radius ])

@@ -5,7 +5,7 @@ import { forwards, midfielders, defenders, goalkeepers } from '../../constants/P
 import { ScrollView } from 'react-native-gesture-handler'
 import { useFocusEffect } from '@react-navigation/native'
 
-const Home = () => {
+const Home = ({ navigation }) => {
 	const [ show, setShow ] = useState(0)
 	const config = {
 		duration: 200
@@ -27,7 +27,12 @@ const Home = () => {
 			overScrollMode='never'
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}>
-			<TeamRole role='forward' data={forwards} transition={transitionHome} />
+			<TeamRole
+				onPress={() => navigation.push('Detail')}
+				role='forward'
+				data={forwards}
+				transition={transitionHome}
+			/>
 			<TeamRole
 				role='midfielders'
 				data={midfielders}

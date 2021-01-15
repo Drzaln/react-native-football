@@ -1,10 +1,9 @@
 import React from 'react'
-import { Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { interpolate } from 'react-native-reanimated'
 import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions'
 import Player from '../Player/Player'
-const TeamRole = ({ role, style, fontStyle, data, transition }) => {
+const TeamRole = ({ role, style, fontStyle, data, transition, onPress }) => {
 	const width = useWindowDimensions().width
 	const translateY = interpolate(transition, {
 		inputRange: [ 0, 1 ],
@@ -39,7 +38,7 @@ const TeamRole = ({ role, style, fontStyle, data, transition }) => {
 				{role}
 			</Animated.Text>
 			<Animated.View style={{ flexDirection: 'row', transform: [ { translateX } ] }}>
-				{data && data.length > 0 ? data.map((item, i) => <Player key={i} data={item} index={i} />) : null}
+				{data && data.length > 0 ? data.map((item, i) => <Player key={i} data={item} index={i} onPress={onPress} />) : null}
 			</Animated.View>
 		</ScrollView>
 	)

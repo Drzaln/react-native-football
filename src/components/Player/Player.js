@@ -2,9 +2,9 @@ import React from 'react'
 import { View, Text, ImageBackground, Pressable } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-const Player = ({ data, index }) => {
+const Player = ({ data, index, onPress }) => {
 	return (
-		<Pressable onPress={() => console.log('pencet')} >
+		<Pressable onPress={onPress} >
 			<View style={{ width: 125, height: 200, marginLeft: index === 0 ? 70 : 16 }}>
 				<ImageBackground
 					style={{
