@@ -34,8 +34,8 @@ const MyStack = () => {
 				},
 				gestureEnabled: false,
 				transitionSpec: {
-					open: { animation: timing, config: { duration: 10 } },
-					close: { animation: timing, config: { duration: 10 } }
+					open: { animation: timing, config: { duration: 100 } },
+					close: { animation: timing, config: { duration: 100 } }
 				},
 				cardStyleInterpolator: ({ current: { progress } }) => {
 					return {
@@ -43,7 +43,8 @@ const MyStack = () => {
 							opacity: progress,
 						}
 					}
-				}
+				},
+				cardStyle:{backgroundColor: '#030610'},
 			}}
 			headerMode='screen'>
 			<Stack.Screen name='Home' component={HomeTab} />
