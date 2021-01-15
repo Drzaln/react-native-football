@@ -46,7 +46,7 @@ const MyStack = () => {
 				},
 				cardStyle:{backgroundColor: '#030610'},
 			}}
-			headerMode='screen'>
+			headerMode='float'>
 			<Stack.Screen name='Home' component={HomeTab} />
 			<Stack.Screen name='Detail' component={DetailTab} />
 		</Stack.Navigator>
