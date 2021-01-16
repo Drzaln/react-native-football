@@ -2,12 +2,31 @@ import React, { useState } from 'react'
 import { View, Text, Image, useWindowDimensions } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
+import Animated, { interpolate, set, useCode } from 'react-native-reanimated'
+import { timing, useValue } from 'react-native-redash/lib/module/v1'
 import CircleAnimated from '../../components/CircleAnimated/CircleAnimated'
 import TopNavigation from '../../components/TopNavigation/TopNavigation'
 
 const Detail = () => {
 	const [ selectedNav, setSelectedNav ] = useState(0)
+	const animatedView = useValue(0)
 	const nav = [ 'defence', 'distribution', 'attack', 'discipline' ]
+
+	useCode(() => [ set(animatedView, timing({ from: 0, to: 1, duration: 250 })) ], [])
+
+	const translateX = interpolate(animatedView, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ -1000, 0 ]
+	})
+	const minusTranslateX = interpolate(animatedView, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ 1000, 0 ]
+	})
+	const translateY = interpolate(animatedView, {
+		inputRange: [ 0, 1 ],
+		outputRange: [ 1000, 0 ]
+	})
+
 	return (
 		<ScrollView
 			contentContainerStyle={{ paddingVertical: 16, backgroundColor: '#030610' }}
@@ -15,26 +34,36 @@ const Detail = () => {
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}>
 			<View style={{ flexDirection: 'row', paddingHorizontal: 16 }}>
-				<View style={{ flex: 1, justifyContent: 'space-between' }}>
+				<Animated.View style={{ flex: 1, justifyContent: 'space-between', transform: [ { translateX } ] }}>
 					<PlayerInfo />
 					<NumberStat />
 					<NumberStat number={64} text='SHOTS ON TARGET' />
 					<NumberStat direction='column' number={2.239} text='MINUTES PLAYED' />
-				</View>
-				<BigImage />
+				</Animated.View>
+				<Animated.View style={{ flex: 1, transform: [ { translateX: minusTranslateX } ] }}>
+					<BigImage />
+				</Animated.View>
 			</View>
-			<TopNavigation
-				nav={nav}
-				selectedNav={selectedNav}
-				mode='blokline'
-				style={{ marginVertical: 16, marginLeft: 16 }}
-				onPress={(key) => setSelectedNav(key)}
-			/>
-			<View style={{ marginHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+			<Animated.View style={{ transform: [ { translateX } ] }}>
+				<TopNavigation
+					nav={nav}
+					selectedNav={selectedNav}
+					mode='blokline'
+					style={{ marginVertical: 16, marginLeft: 16 }}
+					onPress={(key) => setSelectedNav(key)}
+				/>
+			</Animated.View>
+			<Animated.View
+				style={{
+					marginHorizontal: 16,
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					transform: [ { translateY } ]
+				}}>
 				<PlayerStat percent={75} number={26} title='Clearance' barTitle='Tackles' />
 				<PlayerStat percent={48.1} number={2} title='Blocks' barTitle='Duel' />
 				<PlayerStat percent={44.1} number={4} title='Interceptions' barTitle='Aerial Duels' />
-			</View>
+			</Animated.View>
 		</ScrollView>
 	)
 }
@@ -115,12 +144,13 @@ const PlayerInfo = () => {
 
 const BigImage = () => {
 	const { width } = useWindowDimensions()
-	const imageHeight = width - 150
+	const imageContainer = width - 150
+	const imageHeight = imageContainer - 96
 	return (
 		<View style={{ flex: 1.2, overflow: 'hidden' }}>
-			<View style={{ height: imageHeight, width: '100%' }}>
+			<View style={{ height: imageContainer, width: '100%' }}>
 				<Image
-					style={{ height: '165%', width: '100%' }}
+					style={{ height: `${Math.round(imageHeight)}%`, width: '100%' }}
 					source={require('../../assets/team/RONALDO_970x700.png')}
 					resizeMethod='auto'
 					resizeMode='cover'

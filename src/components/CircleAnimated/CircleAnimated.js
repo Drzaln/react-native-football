@@ -32,7 +32,6 @@ const CircleAnimated = ({
 
 	//effect
 	useCode(() => [ set(progressAnimated, timing({ from: progressAnimated, to: percent, duration })) ], [ percent ])
-	// useCode(() => [ set(progressSpin, timing({ from: progressSpin, to: percent })) ], [])
 
 	// variable
 	const strokeDasharray = useMemo(() => `${radius * 2 * Math.PI} ${radius * 2 * Math.PI}`, [ radius ])
