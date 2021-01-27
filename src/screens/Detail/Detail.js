@@ -151,7 +151,7 @@ const BigImage = () => {
 			<View style={{ height: imageContainer, width: '100%' }}>
 				<Image
 					style={{ height: `${Math.round(imageHeight)}%`, width: '100%' }}
-					source={require('../../assets/team/RONALDO_970x700.png')}
+					source={{uri: 'https://raw.githubusercontent.com/Drzaln/react-native-football-assets/main/RONALDO_970x700.png'}}
 					resizeMethod='auto'
 					resizeMode='cover'
 				/>

@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const Player = ({ data, index, onPress }) => {
 	return (
-		<Pressable onPress={onPress} >
+		<Pressable onPress={onPress}>
 			<View style={{ width: 125, height: 200, marginLeft: index === 0 ? 70 : 16 }}>
 				<ImageBackground
 					style={{
@@ -14,8 +14,8 @@ const Player = ({ data, index, onPress }) => {
 						zIndex: 1,
 						justifyContent: 'flex-end'
 					}}
-					source={data.image}
-					resizeMode="cover">
+					source={{ uri: data.image }}
+					resizeMode='cover'>
 					<LinearGradient
 						colors={[ 'transparent', '#030610', '#030610', '#030610' ]}
 						style={{

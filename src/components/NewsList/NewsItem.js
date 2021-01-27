@@ -6,7 +6,7 @@ const NewsItem = ({ item }) => {
 		<Pressable style={{ marginBottom: 24 }}>
 			<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 8 }}>
 				<View style={{ flex: 1, height: 70, backgroundColor: 'grey', marginRight: 12 }}>
-					<Image style={{ width: '100%', height: '100%' }} source={item.image} resizeMode="cover" />
+					<Image style={{ width: '100%', height: '100%' }} source={{ uri: item.image }} resizeMode='cover' />
 				</View>
 				<View style={{ flex: 3, justifyContent: 'space-between' }}>
 					<Text style={{ color: '#FAFAFA', fontSize: 16, fontFamily: 'Oswald-Regular' }}>
