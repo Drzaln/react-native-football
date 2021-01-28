@@ -36,6 +36,8 @@ npm-debug.log
 yarn-error.log
 my-upload-key.keystore
 some_signing_key.jks.base64.txt
+my-upload-key
+new_signing_key.jks.base64.txt
 
 # BUCK
 buck-out/
