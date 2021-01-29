@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.apportfolio2"
+        applicationId "com.apportfolio.bola"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
