@@ -71,7 +71,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT }}
-          packageName: com.apportfolio
+          packageName: com.rnfootball
           releaseFiles: ${{steps.sign_app.outputs.signedReleaseFile}}
           track: beta
           inAppUpdatePriority: 3
