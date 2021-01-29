@@ -31,11 +31,21 @@ jobs:
         run: |
           cd android && ./gradlew assembleRelease
 
+      - name: Sign App Apk
+        id: sign_app_apk
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: android/app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+
       - name: Upload Artifact APK
         uses: actions/upload-artifact@v2
         with:
           name: RnFootball-apk
-          path: android/app/build/outputs/apk/release
+          path: ${{steps.sign_app_apk.outputs.signedReleaseFile}}
 
       - name: Build Android App Bundle
         run: |
