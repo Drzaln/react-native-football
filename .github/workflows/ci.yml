@@ -56,3 +56,14 @@ jobs:
         with:
           name: Signed App Bundle
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
+
+      - name: Deploy to Play Store (BETA)
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT }}
+        packageName: com.rnfootball
+        releaseFile: a${{steps.sign_app.outputs.signedReleaseFile}}
+        track: beta
+        inAppUpdatePriority: 3
+        userFraction: 0.5
+        whatsNewDirectory: android/release-notes/
