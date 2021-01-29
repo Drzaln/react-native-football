@@ -1,4 +1,4 @@
-package com.footballapp;
+package com.apportfolio;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
