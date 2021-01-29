@@ -1,4 +1,4 @@
-package com.apportfolio;
+package com.apportfolio2;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
