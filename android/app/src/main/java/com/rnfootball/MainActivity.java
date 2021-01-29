@@ -1,4 +1,4 @@
-package com.apportfolio.bola;
+package com.apportfolio;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
