@@ -1,4 +1,4 @@
-package com.rnfootball;
+package com.rnbola;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
